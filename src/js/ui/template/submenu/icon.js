@@ -104,5 +104,16 @@ export default ({ locale, makeSvgIcon }) => `
         <li>
             <div class="tie-icon-color" title="${locale.localize('Color')}"></div>
         </li>
+        <li class="tui-image-editor-partition">
+            <div></div>
+        </li>
+        <li class="tie-reorder-buttons">
+            <div class="tie-icon-reorder-up">
+                ${makeSvgIcon(['normal', 'active'], 'arrow-up', true)}
+            </div>
+            <div class="tie-icon-reorder-down">
+                ${makeSvgIcon(['normal', 'active'], 'arrow-down', true)}
+            </div>
+        </li>
     </ul>
-`;
+`

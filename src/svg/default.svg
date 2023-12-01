@@ -331,5 +331,19 @@
         <path fill="inherit" fill-rule="nonzero" d="M16.5 3.5c1.325 0 2.41 1.032 2.495 2.336L19 6v6.3h-1V6c0-.828-.672-1.5-1.5-1.5-.78 0-1.42.595-1.493 1.356L15 6v2.44h-1V6c0-1.38 1.12-2.5 2.5-2.5z" transform="translate(-297 -290) translate(297 290)"/>
     </g>
 </symbol>
+<symbol id="ic-arrow-up" viewBox="0 0 24 24">
+    <path d="M6 15L12 9L18 15" fill="none"  stroke="inherit" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="ic-arrow-down" viewBox="0 0 24 24">
+    <path d="M6 9L12 15L18 9" fill="none" stroke="inherit" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="ic-fast-arrow-up" viewBox="0 0 24 24">
+    <path d="M15.5 16.5L12 13L8.5 16.5"  fill="none" stroke="inherit" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.5 10.5L12 7L8.5 10.5" fill="none"  stroke="inherit" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+   </symbol>
+<symbol id="ic-fast-arrow-down" viewBox="0 0 24 24">
+    <path d="M15.5 7L12 10.5L8.5 7" fill="none" stroke="inherit" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.5 13L12 16.5L8.5 13" fill="none" stroke="inherit" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
 </defs>
 </svg>

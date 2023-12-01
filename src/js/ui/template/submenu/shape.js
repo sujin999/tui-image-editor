@@ -33,6 +33,17 @@ export default ({ locale, makeSvgIcon }) => `
             <div class="tie-color-fill" title="${locale.localize('Fill')}"></div>
             <div class="tie-color-stroke" title="${locale.localize('Stroke')}"></div>
         </li>
+        <li class="tui-image-editor-partition">
+            <div></div>
+        </li>
+        <li class="tie-reorder-buttons">
+            <div class="tie-reorder-up">
+                ${makeSvgIcon(['normal', 'active'], 'arrow-up', true)}
+            </div>
+            <div class="tie-reorder-down">
+                ${makeSvgIcon(['normal', 'active'], 'arrow-down', true)}
+            </div>
+        </li>
         <li class="tui-image-editor-partition only-left-right">
             <div></div>
         </li>
@@ -42,4 +53,4 @@ export default ({ locale, makeSvgIcon }) => `
             <input class="tie-stroke-range-value tui-image-editor-range-value" value="0" />
         </li>
     </ul>
-`;
+`
