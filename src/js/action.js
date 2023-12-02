@@ -92,6 +92,10 @@ export default {
                         this.clearUndoStack()
                         this._invoker.fire(eventNames.EXECUTE_COMMAND, historyNames.LOAD_IMAGE)
                     }),
+                addImageObject: (file) => {
+                    const url = URL.createObjectURL(file)
+                    this.addImageObject(url)
+                },
                 undo: () => {
                     if (!this.isEmptyUndoStack()) {
                         exitCropOnAction()
