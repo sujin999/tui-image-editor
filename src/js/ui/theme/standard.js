@@ -141,7 +141,7 @@
 };
  */
 export default {
-  'common.bi.image': 'http://image.gradiant-sse.herofactory.co.kr/img/image-editor-bi.png',
+  'common.bi.image': 'http://image.gradiant-sse.herofactory.co.kr/img/blank.png',
   'common.bisize.width': '251px',
   'common.bisize.height': '21px',
   'common.backgroundImage': 'none',
