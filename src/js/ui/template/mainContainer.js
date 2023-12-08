@@ -10,7 +10,7 @@ export default ({ locale, biImage, commonStyle, headerStyle, loadButtonStyle, do
                     <input type="file" class="tui-image-editor-image-btn" />
                 </div>
                 <button class="tui-image-editor-download-btn" style="${downloadButtonStyle}">
-                    ${locale.localize('Download')}
+                    ${locale.localize('Preview')}
                 </button>
             </div>
         </div>
