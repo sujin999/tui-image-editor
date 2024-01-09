@@ -39824,7 +39824,7 @@ customEvents_default().mixin(Invoker);
 };
  */
 /* harmony default export */ var standard = ({
-  'common.bi.image': 'http://image.gradiant-sse.herofactory.co.kr/img/blank.png',
+  'common.bi.image': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAAeCAYAAABpP1GsAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAA4ElEQVR4nO3XwRECQBACQSMh/yzXBPRjWTqPfpAAMOzdY9sRD3RgLz14MAYcOrC3HgAEIAAZQJTAENwnHrggimM8BhAlMATngiiBIdh3PfDEAhWoBhAlMATngiiBIZgnlhIYgvuVB/4gymZwBhAlMATngiiBIZgnlhIYgvMHUQJDsP974JMeCIGW9QAggRBoWQ8AEgiBlvUAIIEQaFkPABIIgZb1ACCBEGhZDwASCIGW9QAggRBoWQ8AEgiBlvUAIIEQaFkPABIIgZb1ACCBEGhZDwASCIGW9QAggRBoWQ+ecoCXws+nLPoAAAAASUVORK5CYII=',
   'common.bisize.width': '251px',
   'common.bisize.height': '21px',
   'common.backgroundImage': 'none',
