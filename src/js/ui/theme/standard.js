@@ -141,7 +141,7 @@
 };
  */
 export default {
-  'common.bi.image': 'https://uicdn.toast.com/toastui/img/tui-image-editor-bi.png',
+  'common.bi.image': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAAeCAYAAABpP1GsAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAA4ElEQVR4nO3XwRECQBACQSMh/yzXBPRjWTqPfpAAMOzdY9sRD3RgLz14MAYcOrC3HgAEIAAZQJTAENwnHrggimM8BhAlMATngiiBIdh3PfDEAhWoBhAlMATngiiBIZgnlhIYgvuVB/4gymZwBhAlMATngiiBIZgnlhIYgvMHUQJDsP974JMeCIGW9QAggRBoWQ8AEgiBlvUAIIEQaFkPABIIgZb1ACCBEGhZDwASCIGW9QAggRBoWQ8AEgiBlvUAIIEQaFkPABIIgZb1ACCBEGhZDwASCIGW9QAggRBoWQ+ecoCXws+nLPoAAAAASUVORK5CYII=',
   'common.bisize.width': '251px',
   'common.bisize.height': '21px',
   'common.backgroundImage': 'none',
