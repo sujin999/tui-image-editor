@@ -41326,7 +41326,12 @@ var Resize = /*#__PURE__*/function (_Submenu) {
     var locale = _ref.locale,
       makeSvgIcon = _ref.makeSvgIcon,
       menuBarPosition = _ref.menuBarPosition,
-      usageStatistics = _ref.usageStatistics;
+      usageStatistics = _ref.usageStatistics,
+      _ref$resolution = _ref.resolution,
+      resolution = _ref$resolution === void 0 ? {
+        width: 1280,
+        height: 720
+      } : _ref$resolution;
     _this = _Submenu.call(this, subMenuElement, {
       locale: locale,
       name: 'resize',
@@ -41337,6 +41342,7 @@ var Resize = /*#__PURE__*/function (_Submenu) {
     }) || this;
     _this.status = 'active';
     _this._lockState = false;
+    _this.resolution = resolution;
 
     /**
      * Original dimensions
@@ -41373,8 +41379,8 @@ var Resize = /*#__PURE__*/function (_Submenu) {
     this.setLimit({
       minWidth: defaultResizePixelValues.min,
       minHeight: defaultResizePixelValues.min,
-      maxWidth: dimensions.width,
-      maxHeight: dimensions.height
+      maxWidth: Math.max(this.resolution.width, dimensions.width) || dimensions.width,
+      maxHeight: Math.max(this.resolution.height, dimensions.height) || dimensions.height
     });
   }
 
@@ -43671,7 +43677,8 @@ var Ui = /*#__PURE__*/function () {
         locale: _this._locale,
         makeSvgIcon: _this.theme.makeMenSvgIconSet.bind(_this.theme),
         menuBarPosition: _this.options.menuBarPosition,
-        usageStatistics: _this.options.usageStatistics
+        usageStatistics: _this.options.usageStatistics,
+        resolution: _this.options.resolution
       });
     });
   }

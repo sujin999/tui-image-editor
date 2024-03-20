@@ -1,24 +1,36 @@
-import CustomEvents from 'tui-code-snippet/customEvents/customEvents'
-import extend from 'tui-code-snippet/object/extend'
-import forEach from 'tui-code-snippet/collection/forEach'
-import { getSelector, assignmentForDestroy, cls, getHistoryTitle, isSilentCommand } from '@/util'
-import { ZOOM_HELP_MENUS, COMMAND_HELP_MENUS, DELETE_HELP_MENUS, eventNames, HELP_MENUS } from '@/consts'
-import mainContainer from '@/ui/template/mainContainer'
-import controls from '@/ui/template/controls'
+import CustomEvents from 'tui-code-snippet/customEvents/customEvents';
+import extend from 'tui-code-snippet/object/extend';
+import forEach from 'tui-code-snippet/collection/forEach';
+import {
+    getSelector,
+    assignmentForDestroy,
+    cls,
+    getHistoryTitle,
+    isSilentCommand
+} from '@/util';
+import {
+    ZOOM_HELP_MENUS,
+    COMMAND_HELP_MENUS,
+    DELETE_HELP_MENUS,
+    eventNames,
+    HELP_MENUS
+} from '@/consts';
+import mainContainer from '@/ui/template/mainContainer';
+import controls from '@/ui/template/controls';
 
-import Theme from '@/ui/theme/theme'
-import Shape from '@/ui/shape'
-import Crop from '@/ui/crop'
-import Resize from '@/ui/resize'
-import Flip from '@/ui/flip'
-import Rotate from '@/ui/rotate'
-import Text from '@/ui/text'
-import Mask from '@/ui/mask'
-import Icon from '@/ui/icon'
-import Draw from '@/ui/draw'
-import Filter from '@/ui/filter'
-import History from '@/ui/history'
-import Locale from '@/ui/locale/locale'
+import Theme from '@/ui/theme/theme';
+import Shape from '@/ui/shape';
+import Crop from '@/ui/crop';
+import Resize from '@/ui/resize';
+import Flip from '@/ui/flip';
+import Rotate from '@/ui/rotate';
+import Text from '@/ui/text';
+import Mask from '@/ui/mask';
+import Icon from '@/ui/icon';
+import Draw from '@/ui/draw';
+import Filter from '@/ui/filter';
+import History from '@/ui/history';
+import Locale from '@/ui/locale/locale';
 
 const SUB_UI_COMPONENT = {
     Shape,
@@ -30,18 +42,18 @@ const SUB_UI_COMPONENT = {
     Mask,
     Icon,
     Draw,
-    Filter,
-}
+    Filter
+};
 
-const BI_EXPRESSION_MINSIZE_WHEN_TOP_POSITION = '1300'
-const HISTORY_MENU = 'history'
-const HISTORY_PANEL_CLASS_NAME = 'tie-panel-history'
+const BI_EXPRESSION_MINSIZE_WHEN_TOP_POSITION = '1300';
+const HISTORY_MENU = 'history';
+const HISTORY_PANEL_CLASS_NAME = 'tie-panel-history';
 
-const CLASS_NAME_ON = 'on'
+const CLASS_NAME_ON = 'on';
 const ZOOM_BUTTON_TYPE = {
     ZOOM_IN: 'zoomIn',
-    HAND: 'hand',
-}
+    HAND: 'hand'
+};
 
 /**
  * Ui class
@@ -60,42 +72,42 @@ const ZOOM_BUTTON_TYPE = {
  */
 class Ui {
     constructor(element, options, actions) {
-        this.options = this._initializeOption(options)
-        this._actions = actions
-        this.submenu = false
-        this.imageSize = {}
-        this.uiSize = {}
-        this._locale = new Locale(this.options.locale)
-        this.theme = new Theme(this.options.theme)
-        this.eventHandler = {}
-        this._submenuChangeTransection = false
-        this._selectedElement = null
-        this._mainElement = null
-        this._editorElementWrap = null
-        this._editorElement = null
-        this._menuBarElement = null
-        this._subMenuElement = null
-        this._loadElement = null
+        this.options = this._initializeOption(options);
+        this._actions = actions;
+        this.submenu = false;
+        this.imageSize = {};
+        this.uiSize = {};
+        this._locale = new Locale(this.options.locale);
+        this.theme = new Theme(this.options.theme);
+        this.eventHandler = {};
+        this._submenuChangeTransection = false;
+        this._selectedElement = null;
+        this._mainElement = null;
+        this._editorElementWrap = null;
+        this._editorElement = null;
+        this._menuBarElement = null;
+        this._subMenuElement = null;
+        this._loadElement = null;
 
-        this._makeUiElement(element)
-        this._setUiSize()
-        this._initMenuEvent = false
+        this._makeUiElement(element);
+        this._setUiSize();
+        this._initMenuEvent = false;
 
-        this._makeSubMenu()
+        this._makeSubMenu();
 
-        this._attachHistoryEvent()
-        this._attachZoomEvent()
+        this._attachHistoryEvent();
+        this._attachZoomEvent();
     }
 
     /**
      * Destroys the instance.
      */
     destroy() {
-        this._removeUiEvent()
-        this._destroyAllMenu()
-        this._selectedElement.innerHTML = ''
+        this._removeUiEvent();
+        this._destroyAllMenu();
+        this._selectedElement.innerHTML = '';
 
-        assignmentForDestroy(this)
+        assignmentForDestroy(this);
     }
 
     /**
@@ -116,11 +128,11 @@ class Ui {
                     cornerStrokeColor: '#fff',
                     transparentCorners: false,
                     lineWidth: 2,
-                    borderColor: '#fff',
-                },
+                    borderColor: '#fff'
+                }
             },
-            option,
-        )
+            option
+        );
     }
 
     /**
@@ -146,32 +158,36 @@ class Ui {
      */
     resizeEditor({ uiSize, imageSize = this.imageSize } = {}) {
         if (imageSize !== this.imageSize) {
-            this.imageSize = imageSize
+            this.imageSize = imageSize;
         }
         if (uiSize) {
-            this._setUiSize(uiSize)
+            this._setUiSize(uiSize);
         }
 
-        const { width, height } = this._getCanvasMaxDimension()
-        const editorElementStyle = this._editorElement.style
-        const { menuBarPosition } = this.options
+        const { width, height } = this._getCanvasMaxDimension();
+        const editorElementStyle = this._editorElement.style;
+        const { menuBarPosition } = this.options;
 
-        editorElementStyle.height = `${height}px`
-        editorElementStyle.width = `${width}px`
+        editorElementStyle.height = `${height}px`;
+        editorElementStyle.width = `${width}px`;
 
-        this._setEditorPosition(menuBarPosition)
+        this._setEditorPosition(menuBarPosition);
 
-        this._editorElementWrap.style.bottom = `0px`
-        this._editorElementWrap.style.top = `0px`
-        this._editorElementWrap.style.left = `0px`
-        this._editorElementWrap.style.width = `100%`
+        this._editorElementWrap.style.bottom = `0px`;
+        this._editorElementWrap.style.top = `0px`;
+        this._editorElementWrap.style.left = `0px`;
+        this._editorElementWrap.style.width = `100%`;
 
-        const selectElementClassList = this._selectedElement.classList
+        const selectElementClassList = this._selectedElement.classList;
 
-        if (menuBarPosition === 'top' && this._selectedElement.offsetWidth < BI_EXPRESSION_MINSIZE_WHEN_TOP_POSITION) {
-            selectElementClassList.add('tui-image-editor-top-optimization')
+        if (
+            menuBarPosition === 'top' &&
+            this._selectedElement.offsetWidth <
+                BI_EXPRESSION_MINSIZE_WHEN_TOP_POSITION
+        ) {
+            selectElementClassList.add('tui-image-editor-top-optimization');
         } else {
-            selectElementClassList.remove('tui-image-editor-top-optimization')
+            selectElementClassList.remove('tui-image-editor-top-optimization');
         }
     }
 
@@ -180,14 +196,18 @@ class Ui {
      * @param {string} type - type of zoom button
      */
     toggleZoomButtonStatus(type) {
-        const targetClassList = this._buttonElements[type].classList
+        const targetClassList = this._buttonElements[type].classList;
 
-        targetClassList.toggle(CLASS_NAME_ON)
+        targetClassList.toggle(CLASS_NAME_ON);
 
         if (type === ZOOM_BUTTON_TYPE.ZOOM_IN) {
-            this._buttonElements[ZOOM_BUTTON_TYPE.HAND].classList.remove(CLASS_NAME_ON)
+            this._buttonElements[ZOOM_BUTTON_TYPE.HAND].classList.remove(
+                CLASS_NAME_ON
+            );
         } else {
-            this._buttonElements[ZOOM_BUTTON_TYPE.ZOOM_IN].classList.remove(CLASS_NAME_ON)
+            this._buttonElements[ZOOM_BUTTON_TYPE.ZOOM_IN].classList.remove(
+                CLASS_NAME_ON
+            );
         }
     }
 
@@ -195,9 +215,10 @@ class Ui {
      * Turn off zoom-in button status
      */
     offZoomInButtonStatus() {
-        const zoomInClassList = this._buttonElements[ZOOM_BUTTON_TYPE.ZOOM_IN].classList
+        const zoomInClassList =
+            this._buttonElements[ZOOM_BUTTON_TYPE.ZOOM_IN].classList;
 
-        zoomInClassList.remove(CLASS_NAME_ON)
+        zoomInClassList.remove(CLASS_NAME_ON);
     }
 
     /**
@@ -205,9 +226,10 @@ class Ui {
      * @param {boolean} enabled - status to change
      */
     changeHandButtonStatus(enabled) {
-        const handClassList = this._buttonElements[ZOOM_BUTTON_TYPE.HAND].classList
+        const handClassList =
+            this._buttonElements[ZOOM_BUTTON_TYPE.HAND].classList;
 
-        handClassList[enabled ? 'add' : 'remove'](CLASS_NAME_ON)
+        handClassList[enabled ? 'add' : 'remove'](CLASS_NAME_ON);
     }
 
     /**
@@ -217,9 +239,9 @@ class Ui {
      * @ignore
      */
     changeHelpButtonEnabled(buttonType, enableStatus) {
-        const buttonClassList = this._buttonElements[buttonType].classList
+        const buttonClassList = this._buttonElements[buttonType].classList;
 
-        buttonClassList[enableStatus ? 'add' : 'remove']('enabled')
+        buttonClassList[enableStatus ? 'add' : 'remove']('enabled');
     }
 
     /**
@@ -238,20 +260,31 @@ class Ui {
             {
                 loadImage: {
                     path: '',
-                    name: '',
+                    name: ''
                 },
                 locale: {},
                 menuIconPath: '',
-                menu: ['resize', 'crop', 'flip', 'rotate', 'draw', 'shape', 'icon', 'text', 'mask', 'filter'],
+                menu: [
+                    'resize',
+                    'crop',
+                    'flip',
+                    'rotate',
+                    'draw',
+                    'shape',
+                    'icon',
+                    'text',
+                    'mask',
+                    'filter'
+                ],
                 initMenu: '',
                 uiSize: {
                     width: '100%',
-                    height: '100%',
+                    height: '100%'
                 },
-                menuBarPosition: 'bottom',
+                menuBarPosition: 'bottom'
             },
-            options,
-        )
+            options
+        );
     }
 
     /**
@@ -262,9 +295,9 @@ class Ui {
      * @private
      */
     _setUiSize(uiSize = this.options.uiSize) {
-        const elementDimension = this._selectedElement.style
-        elementDimension.width = uiSize.width
-        elementDimension.height = uiSize.height
+        const elementDimension = this._selectedElement.style;
+        elementDimension.width = uiSize.width;
+        elementDimension.height = uiSize.height;
     }
 
     /**
@@ -273,13 +306,18 @@ class Ui {
      */
     _makeSubMenu() {
         forEach(this.options.menu, (menuName) => {
-            const SubComponentClass = SUB_UI_COMPONENT[menuName.replace(/^[a-z]/, ($0) => $0.toUpperCase())]
+            const SubComponentClass =
+                SUB_UI_COMPONENT[
+                    menuName.replace(/^[a-z]/, ($0) => $0.toUpperCase())
+                ];
 
             // make menu element
-            this._makeMenuElement(menuName)
+            this._makeMenuElement(menuName);
 
             // menu btn element
-            this._buttonElements[menuName] = this._menuBarElement.querySelector(`.tie-btn-${menuName}`)
+            this._buttonElements[menuName] = this._menuBarElement.querySelector(
+                `.tie-btn-${menuName}`
+            );
 
             // submenu ui instance
             this[menuName] = new SubComponentClass(this._subMenuElement, {
@@ -287,8 +325,9 @@ class Ui {
                 makeSvgIcon: this.theme.makeMenSvgIconSet.bind(this.theme),
                 menuBarPosition: this.options.menuBarPosition,
                 usageStatistics: this.options.usageStatistics,
-            })
-        })
+                resolution: this.options.resolution
+            });
+        });
     }
 
     /**
@@ -296,9 +335,9 @@ class Ui {
      * @private
      */
     _attachHistoryEvent() {
-        this.on(eventNames.EXECUTE_COMMAND, this._addHistory.bind(this))
-        this.on(eventNames.AFTER_UNDO, this._selectPrevHistory.bind(this))
-        this.on(eventNames.AFTER_REDO, this._selectNextHistory.bind(this))
+        this.on(eventNames.EXECUTE_COMMAND, this._addHistory.bind(this));
+        this.on(eventNames.AFTER_UNDO, this._selectPrevHistory.bind(this));
+        this.on(eventNames.AFTER_REDO, this._selectNextHistory.bind(this));
     }
 
     /**
@@ -307,10 +346,12 @@ class Ui {
      */
     _attachZoomEvent() {
         this.on(eventNames.HAND_STARTED, () => {
-            this.offZoomInButtonStatus()
-            this.changeHandButtonStatus(true)
-        })
-        this.on(eventNames.HAND_STOPPED, () => this.changeHandButtonStatus(false))
+            this.offZoomInButtonStatus();
+            this.changeHandButtonStatus(true);
+        });
+        this.on(eventNames.HAND_STOPPED, () =>
+            this.changeHandButtonStatus(false)
+        );
     }
 
     /**
@@ -319,23 +360,23 @@ class Ui {
      * @private
      */
     _makeUiElement(element) {
-        let selectedElement
+        let selectedElement;
 
         if (element.nodeType) {
-            selectedElement = element
+            selectedElement = element;
         } else {
-            selectedElement = document.querySelector(element)
+            selectedElement = document.querySelector(element);
         }
-        const selector = getSelector(selectedElement)
+        const selector = getSelector(selectedElement);
 
-        selectedElement.classList.add('tui-image-editor-container')
+        selectedElement.classList.add('tui-image-editor-container');
         selectedElement.innerHTML =
             controls({
                 locale: this._locale,
                 biImage: this.theme.getStyle('common.bi'),
                 loadButtonStyle: this.theme.getStyle('loadButton'),
                 downloadButtonStyle: this.theme.getStyle('downloadButton'),
-                menuBarPosition: this.options.menuBarPosition,
+                menuBarPosition: this.options.menuBarPosition
             }) +
             mainContainer({
                 locale: this._locale,
@@ -344,33 +385,35 @@ class Ui {
                 headerStyle: this.theme.getStyle('header'),
                 loadButtonStyle: this.theme.getStyle('loadButton'),
                 downloadButtonStyle: this.theme.getStyle('downloadButton'),
-                submenuStyle: this.theme.getStyle('submenu'),
-            })
+                submenuStyle: this.theme.getStyle('submenu')
+            });
 
-        this._selectedElement = selectedElement
-        this._selectedElement.classList.add(this.options.menuBarPosition)
+        this._selectedElement = selectedElement;
+        this._selectedElement.classList.add(this.options.menuBarPosition);
 
-        this._mainElement = selector('.tui-image-editor-main')
-        this._editorElementWrap = selector('.tui-image-editor-wrap')
-        this._editorElement = selector('.tui-image-editor')
-        this._helpMenuBarElement = selector('.tui-image-editor-help-menu')
-        this._menuBarElement = selector('.tui-image-editor-menu')
-        this._subMenuElement = selector('.tui-image-editor-submenu')
+        this._mainElement = selector('.tui-image-editor-main');
+        this._editorElementWrap = selector('.tui-image-editor-wrap');
+        this._editorElement = selector('.tui-image-editor');
+        this._helpMenuBarElement = selector('.tui-image-editor-help-menu');
+        this._menuBarElement = selector('.tui-image-editor-menu');
+        this._subMenuElement = selector('.tui-image-editor-submenu');
         this._buttonElements = {
-            download: this._selectedElement.querySelectorAll('.tui-image-editor-download-btn'),
+            download: this._selectedElement.querySelectorAll(
+                '.tui-image-editor-download-btn'
+            )
             // load: this._selectedElement.querySelectorAll('.tui-image-editor-load-btn'),
-        }
+        };
 
-        this._addHelpMenus()
+        this._addHelpMenus();
 
         this._historyMenu = new History(this._buttonElements[HISTORY_MENU], {
             locale: this._locale,
-            makeSvgIcon: this.theme.makeMenSvgIconSet.bind(this.theme),
-        })
+            makeSvgIcon: this.theme.makeMenSvgIconSet.bind(this.theme)
+        });
 
-        this._activateZoomMenus()
+        this._activateZoomMenus();
 
-        this._loadElement = selector('.tui-image-editor-image-btn')
+        this._loadElement = selector('.tui-image-editor-image-btn');
     }
 
     /**
@@ -379,8 +422,8 @@ class Ui {
      */
     _activateZoomMenus() {
         forEach(ZOOM_HELP_MENUS, (menu) => {
-            this.changeHelpButtonEnabled(menu, true)
-        })
+            this.changeHelpButtonEnabled(menu, true);
+        });
     }
 
     /**
@@ -389,7 +432,13 @@ class Ui {
      * @private
      */
     _makeHelpMenuWithPartition() {
-        return [...ZOOM_HELP_MENUS, '', ...COMMAND_HELP_MENUS, '', ...DELETE_HELP_MENUS]
+        return [
+            ...ZOOM_HELP_MENUS,
+            '',
+            ...COMMAND_HELP_MENUS,
+            '',
+            ...DELETE_HELP_MENUS
+        ];
     }
 
     /**
@@ -397,17 +446,24 @@ class Ui {
      * @private
      */
     _addHelpMenus() {
-        const helpMenuWithPartition = this._makeHelpMenuWithPartition()
+        const helpMenuWithPartition = this._makeHelpMenuWithPartition();
 
         forEach(helpMenuWithPartition, (menuName) => {
             if (!menuName) {
-                this._makeMenuPartitionElement()
+                this._makeMenuPartitionElement();
             } else {
-                this._makeMenuElement(menuName, ['normal', 'disabled', 'hover'], 'help')
+                this._makeMenuElement(
+                    menuName,
+                    ['normal', 'disabled', 'hover'],
+                    'help'
+                );
 
-                this._buttonElements[menuName] = this._helpMenuBarElement.querySelector(`.tie-btn-${menuName}`)
+                this._buttonElements[menuName] =
+                    this._helpMenuBarElement.querySelector(
+                        `.tie-btn-${menuName}`
+                    );
             }
-        })
+        });
     }
 
     /**
@@ -415,13 +471,13 @@ class Ui {
      * @private
      */
     _makeMenuPartitionElement() {
-        const partitionElement = document.createElement('li')
-        const partitionInnerElement = document.createElement('div')
-        partitionElement.className = cls('item')
-        partitionInnerElement.className = cls('icpartition')
-        partitionElement.appendChild(partitionInnerElement)
+        const partitionElement = document.createElement('li');
+        const partitionInnerElement = document.createElement('div');
+        partitionElement.className = cls('item');
+        partitionInnerElement.className = cls('icpartition');
+        partitionElement.appendChild(partitionInnerElement);
 
-        this._helpMenuBarElement.appendChild(partitionElement)
+        this._helpMenuBarElement.appendChild(partitionElement);
     }
 
     /**
@@ -431,18 +487,25 @@ class Ui {
      * @param {string} menuType - 'normal' or 'help'
      * @private
      */
-    _makeMenuElement(menuName, useIconTypes = ['normal', 'active', 'hover'], menuType = 'normal') {
-        const btnElement = document.createElement('li')
-        const menuItemHtml = this.theme.makeMenSvgIconSet(useIconTypes, menuName)
+    _makeMenuElement(
+        menuName,
+        useIconTypes = ['normal', 'active', 'hover'],
+        menuType = 'normal'
+    ) {
+        const btnElement = document.createElement('li');
+        const menuItemHtml = this.theme.makeMenSvgIconSet(
+            useIconTypes,
+            menuName
+        );
 
-        this._addTooltipAttribute(btnElement, menuName)
-        btnElement.className = `tie-btn-${menuName} ${cls('item')} ${menuType}`
-        btnElement.innerHTML = menuItemHtml
+        this._addTooltipAttribute(btnElement, menuName);
+        btnElement.className = `tie-btn-${menuName} ${cls('item')} ${menuType}`;
+        btnElement.innerHTML = menuItemHtml;
 
         if (menuType === 'normal') {
-            this._menuBarElement.appendChild(btnElement)
+            this._menuBarElement.appendChild(btnElement);
         } else {
-            this._helpMenuBarElement.appendChild(btnElement)
+            this._helpMenuBarElement.appendChild(btnElement);
         }
     }
 
@@ -452,9 +515,13 @@ class Ui {
      */
     _addHelpActionEvent() {
         forEach(HELP_MENUS, (helpName) => {
-            this.eventHandler[helpName] = (event) => this._actions.main[helpName](event)
-            this._buttonElements[helpName].addEventListener('click', this.eventHandler[helpName])
-        })
+            this.eventHandler[helpName] = (event) =>
+                this._actions.main[helpName](event);
+            this._buttonElements[helpName].addEventListener(
+                'click',
+                this.eventHandler[helpName]
+            );
+        });
     }
 
     /**
@@ -463,8 +530,11 @@ class Ui {
      */
     _removeHelpActionEvent() {
         forEach(HELP_MENUS, (helpName) => {
-            this._buttonElements[helpName].removeEventListener('click', this.eventHandler[helpName])
-        })
+            this._buttonElements[helpName].removeEventListener(
+                'click',
+                this.eventHandler[helpName]
+            );
+        });
     }
 
     /**
@@ -473,9 +543,12 @@ class Ui {
      */
     _addHistory(command) {
         if (!isSilentCommand(command)) {
-            const historyTitle = typeof command === 'string' ? { name: command } : getHistoryTitle(command)
+            const historyTitle =
+                typeof command === 'string'
+                    ? { name: command }
+                    : getHistoryTitle(command);
 
-            this._historyMenu.add(historyTitle)
+            this._historyMenu.add(historyTitle);
         }
     }
 
@@ -483,28 +556,28 @@ class Ui {
      * Init history
      */
     initHistory() {
-        this._historyMenu.init()
+        this._historyMenu.init();
     }
 
     /**
      * Clear history
      */
     clearHistory() {
-        this._historyMenu.clear()
+        this._historyMenu.clear();
     }
 
     /**
      * Select prev history
      */
     _selectPrevHistory() {
-        this._historyMenu.prev()
+        this._historyMenu.prev();
     }
 
     /**
      * Select next history
      */
     _selectNextHistory() {
-        this._historyMenu.next()
+        this._historyMenu.next();
     }
 
     /**
@@ -512,16 +585,17 @@ class Ui {
      * @param {object} event - event object
      */
     toggleHistoryMenu(event) {
-        const { target } = event
-        const item = target.closest(`.${HISTORY_PANEL_CLASS_NAME}`)
+        const { target } = event;
+        const item = target.closest(`.${HISTORY_PANEL_CLASS_NAME}`);
 
         if (item) {
-            return
+            return;
         }
 
-        const historyButtonClassList = this._buttonElements[HISTORY_MENU].classList
+        const historyButtonClassList =
+            this._buttonElements[HISTORY_MENU].classList;
 
-        historyButtonClassList.toggle('opened')
+        historyButtonClassList.toggle('opened');
     }
 
     /**
@@ -533,8 +607,10 @@ class Ui {
     _addTooltipAttribute(element, tooltipName) {
         element.setAttribute(
             'tooltip-content',
-            this._locale.localize(tooltipName.replace(/^[a-z]/g, ($0) => $0.toUpperCase())),
-        )
+            this._locale.localize(
+                tooltipName.replace(/^[a-z]/g, ($0) => $0.toUpperCase())
+            )
+        );
     }
 
     /**
@@ -542,16 +618,16 @@ class Ui {
      * @private
      */
     _addDownloadEvent() {
-        this.eventHandler.download = () => this._actions.main.download()
+        this.eventHandler.download = () => this._actions.main.download();
         forEach(this._buttonElements.download, (element) => {
-            element.addEventListener('click', this.eventHandler.download)
-        })
+            element.addEventListener('click', this.eventHandler.download);
+        });
     }
 
     _removeDownloadEvent() {
         forEach(this._buttonElements.download, (element) => {
-            element.removeEventListener('click', this.eventHandler.download)
-        })
+            element.removeEventListener('click', this.eventHandler.download);
+        });
     }
 
     /**
@@ -559,11 +635,12 @@ class Ui {
      * @private
      */
     _addLoadEvent() {
-        this.eventHandler.loadImage = (event) => this._actions.main.load(event.target.files[0])
+        this.eventHandler.loadImage = (event) =>
+            this._actions.main.load(event.target.files[0]);
 
         forEach(this._buttonElements.load, (element) => {
-            element.addEventListener('change', this.eventHandler.loadImage)
-        })
+            element.addEventListener('change', this.eventHandler.loadImage);
+        });
     }
 
     /**
@@ -572,8 +649,8 @@ class Ui {
      */
     _removeLoadEvent() {
         forEach(this._buttonElements.load, (element) => {
-            element.removeEventListener('change', this.eventHandler.loadImage)
-        })
+            element.removeEventListener('change', this.eventHandler.loadImage);
+        });
     }
 
     /**
@@ -582,8 +659,11 @@ class Ui {
      * @private
      */
     _addMainMenuEvent(menuName) {
-        this.eventHandler[menuName] = () => this.changeMenu(menuName)
-        this._buttonElements[menuName].addEventListener('click', this.eventHandler[menuName])
+        this.eventHandler[menuName] = () => this.changeMenu(menuName);
+        this._buttonElements[menuName].addEventListener(
+            'click',
+            this.eventHandler[menuName]
+        );
     }
 
     /**
@@ -592,9 +672,13 @@ class Ui {
      * @private
      */
     _addSubMenuEvent(menuName) {
-        this[menuName].addEvent(this._actions[menuName])
-        this[menuName].on(eventNames.INPUT_BOX_EDITING_STARTED, () => this.fire(eventNames.INPUT_BOX_EDITING_STARTED))
-        this[menuName].on(eventNames.INPUT_BOX_EDITING_STOPPED, () => this.fire(eventNames.INPUT_BOX_EDITING_STOPPED))
+        this[menuName].addEvent(this._actions[menuName]);
+        this[menuName].on(eventNames.INPUT_BOX_EDITING_STARTED, () =>
+            this.fire(eventNames.INPUT_BOX_EDITING_STARTED)
+        );
+        this[menuName].on(eventNames.INPUT_BOX_EDITING_STOPPED, () =>
+            this.fire(eventNames.INPUT_BOX_EDITING_STOPPED)
+        );
     }
 
     /**
@@ -603,9 +687,9 @@ class Ui {
      */
     _addMenuEvent() {
         forEach(this.options.menu, (menuName) => {
-            this._addMainMenuEvent(menuName)
-            this._addSubMenuEvent(menuName)
-        })
+            this._addMainMenuEvent(menuName);
+            this._addSubMenuEvent(menuName);
+        });
     }
 
     /**
@@ -614,10 +698,13 @@ class Ui {
      */
     _removeMainMenuEvent() {
         forEach(this.options.menu, (menuName) => {
-            this._buttonElements[menuName].removeEventListener('click', this.eventHandler[menuName])
-            this[menuName].off(eventNames.INPUT_BOX_EDITING_STARTED)
-            this[menuName].off(eventNames.INPUT_BOX_EDITING_STOPPED)
-        })
+            this._buttonElements[menuName].removeEventListener(
+                'click',
+                this.eventHandler[menuName]
+            );
+            this[menuName].off(eventNames.INPUT_BOX_EDITING_STARTED);
+            this[menuName].off(eventNames.INPUT_BOX_EDITING_STOPPED);
+        });
     }
 
     /**
@@ -626,7 +713,7 @@ class Ui {
      * @ignore
      */
     getEditorArea() {
-        return this._editorElement
+        return this._editorElement;
     }
 
     /**
@@ -635,15 +722,15 @@ class Ui {
      */
     activeMenuEvent() {
         if (this._initMenuEvent) {
-            return
+            return;
         }
 
-        this._addHelpActionEvent()
-        this._addDownloadEvent()
-        this._addMenuEvent()
-        this._initMenu()
-        this._historyMenu.addEvent(this._actions.history)
-        this._initMenuEvent = true
+        this._addHelpActionEvent();
+        this._addDownloadEvent();
+        this._addMenuEvent();
+        this._initMenu();
+        this._historyMenu.addEvent(this._actions.history);
+        this._initMenuEvent = true;
     }
 
     /**
@@ -651,11 +738,11 @@ class Ui {
      * @private
      */
     _removeUiEvent() {
-        this._removeHelpActionEvent()
-        this._removeDownloadEvent()
-        this._removeLoadEvent()
-        this._removeMainMenuEvent()
-        this._historyMenu.removeEvent()
+        this._removeHelpActionEvent();
+        this._removeDownloadEvent();
+        this._removeLoadEvent();
+        this._removeMainMenuEvent();
+        this._historyMenu.removeEvent();
     }
 
     /**
@@ -664,10 +751,10 @@ class Ui {
      */
     _destroyAllMenu() {
         forEach(this.options.menu, (menuName) => {
-            this[menuName].destroy()
-        })
+            this[menuName].destroy();
+        });
 
-        this._historyMenu.destroy()
+        this._historyMenu.destroy();
     }
 
     /**
@@ -675,28 +762,35 @@ class Ui {
      * @ignore
      */
     initCanvas() {
-        const loadImageInfo = this._getLoadImage()
+        const loadImageInfo = this._getLoadImage();
         if (loadImageInfo.path) {
-            this._actions.main.initLoadImage(loadImageInfo.path, loadImageInfo.name).then(() => {
-                this.activeMenuEvent()
-            })
+            this._actions.main
+                .initLoadImage(loadImageInfo.path, loadImageInfo.name)
+                .then(() => {
+                    this.activeMenuEvent();
+                });
         }
 
-        this._addLoadEvent()
+        this._addLoadEvent();
 
-        const gridVisual = document.createElement('div')
+        const gridVisual = document.createElement('div');
 
-        gridVisual.className = cls('grid-visual')
+        gridVisual.className = cls('grid-visual');
         const grid = `<table>
            <tr><td class="dot left-top"></td><td></td><td class="dot right-top"></td></tr>
            <tr><td></td><td></td><td></td></tr>
            <tr><td class="dot left-bottom"></td><td></td><td class="dot right-bottom"></td></tr>
-         </table>`
-        gridVisual.innerHTML = grid
-        this._editorContainerElement = this._editorElement.querySelector('.tui-image-editor-canvas-container')
-        this._editorContainerElement.appendChild(gridVisual)
+         </table>`;
+        gridVisual.innerHTML = grid;
+        this._editorContainerElement = this._editorElement.querySelector(
+            '.tui-image-editor-canvas-container'
+        );
+        this._editorContainerElement.appendChild(gridVisual);
 
-        this._loadElement.addEventListener('change', this._loadImageHandler.bind(this))
+        this._loadElement.addEventListener(
+            'change',
+            this._loadImageHandler.bind(this)
+        );
     }
 
     /**
@@ -705,7 +799,7 @@ class Ui {
      * @private
      */
     _getLoadImage() {
-        return this.options.loadImage
+        return this.options.loadImage;
     }
 
     /**
@@ -717,9 +811,9 @@ class Ui {
      */
     changeMenu(menuName, toggle = true, discardSelection = true) {
         if (!this._submenuChangeTransection) {
-            this._submenuChangeTransection = true
-            this._changeMenu(menuName, toggle, discardSelection)
-            this._submenuChangeTransection = false
+            this._submenuChangeTransection = true;
+            this._changeMenu(menuName, toggle, discardSelection);
+            this._submenuChangeTransection = false;
         }
     }
 
@@ -732,25 +826,29 @@ class Ui {
      */
     _changeMenu(menuName, toggle, discardSelection) {
         if (this.submenu) {
-            this._buttonElements[this.submenu].classList.remove('active')
-            this._mainElement.classList.remove(`tui-image-editor-menu-${this.submenu}`)
+            this._buttonElements[this.submenu].classList.remove('active');
+            this._mainElement.classList.remove(
+                `tui-image-editor-menu-${this.submenu}`
+            );
             if (discardSelection) {
-                this._actions.main.discardSelection()
+                this._actions.main.discardSelection();
             }
-            this._actions.main.changeSelectableAll(true)
-            this[this.submenu].changeStandbyMode()
+            this._actions.main.changeSelectableAll(true);
+            this[this.submenu].changeStandbyMode();
         }
 
         if (this.submenu === menuName && toggle) {
-            this.submenu = null
+            this.submenu = null;
         } else {
-            this._buttonElements[menuName].classList.add('active')
-            this._mainElement.classList.add(`tui-image-editor-menu-${menuName}`)
-            this.submenu = menuName
-            this[this.submenu].changeStartMode()
+            this._buttonElements[menuName].classList.add('active');
+            this._mainElement.classList.add(
+                `tui-image-editor-menu-${menuName}`
+            );
+            this.submenu = menuName;
+            this[this.submenu].changeStartMode();
         }
 
-        this.resizeEditor()
+        this.resizeEditor();
     }
 
     /**
@@ -759,13 +857,13 @@ class Ui {
      */
     _initMenu() {
         if (this.options.initMenu) {
-            const evt = document.createEvent('MouseEvents')
-            evt.initEvent('click', true, false)
-            this._buttonElements[this.options.initMenu].dispatchEvent(evt)
+            const evt = document.createEvent('MouseEvents');
+            evt.initEvent('click', true, false);
+            this._buttonElements[this.options.initMenu].dispatchEvent(evt);
         }
 
         if (this.icon) {
-            this.icon.registerDefaultIcon()
+            this.icon.registerDefaultIcon();
         }
     }
 
@@ -775,14 +873,14 @@ class Ui {
      * @private
      */
     _getCanvasMaxDimension() {
-        const { maxWidth, maxHeight } = this._editorContainerElement.style
-        const width = parseFloat(maxWidth)
-        const height = parseFloat(maxHeight)
+        const { maxWidth, maxHeight } = this._editorContainerElement.style;
+        const width = parseFloat(maxWidth);
+        const height = parseFloat(maxHeight);
 
         return {
             width,
-            height,
-        }
+            height
+        };
     }
 
     /**
@@ -792,47 +890,54 @@ class Ui {
      */
     // eslint-disable-next-line complexity
     _setEditorPosition(menuBarPosition) {
-        const { width, height } = this._getCanvasMaxDimension()
-        const editorElementStyle = this._editorElement.style
-        let top = 0
-        let left = 0
+        const { width, height } = this._getCanvasMaxDimension();
+        const editorElementStyle = this._editorElement.style;
+        let top = 0;
+        let left = 0;
 
         if (this.submenu) {
             if (menuBarPosition === 'bottom') {
                 if (height > this._editorElementWrap.scrollHeight - 150) {
-                    top = (height - this._editorElementWrap.scrollHeight) / 2
+                    top = (height - this._editorElementWrap.scrollHeight) / 2;
                 } else {
-                    top = (150 / 2) * -1
+                    top = (150 / 2) * -1;
                 }
             } else if (menuBarPosition === 'top') {
                 if (height > this._editorElementWrap.offsetHeight - 150) {
-                    top = 150 / 2 - (height - (this._editorElementWrap.offsetHeight - 150)) / 2
+                    top =
+                        150 / 2 -
+                        (height -
+                            (this._editorElementWrap.offsetHeight - 150)) /
+                            2;
                 } else {
-                    top = 150 / 2
+                    top = 150 / 2;
                 }
             } else if (menuBarPosition === 'left') {
                 if (width > this._editorElementWrap.offsetWidth - 248) {
-                    left = 248 / 2 - (width - (this._editorElementWrap.offsetWidth - 248)) / 2
+                    left =
+                        248 / 2 -
+                        (width - (this._editorElementWrap.offsetWidth - 248)) /
+                            2;
                 } else {
-                    left = 248 / 2
+                    left = 248 / 2;
                 }
             } else if (menuBarPosition === 'right') {
                 if (width > this._editorElementWrap.scrollWidth - 248) {
-                    left = (width - this._editorElementWrap.scrollWidth) / 2
+                    left = (width - this._editorElementWrap.scrollWidth) / 2;
                 } else {
-                    left = (248 / 2) * -1
+                    left = (248 / 2) * -1;
                 }
             }
         }
-        editorElementStyle.top = `${top}px`
-        editorElementStyle.left = `${left}px`
+        editorElementStyle.top = `${top}px`;
+        editorElementStyle.left = `${left}px`;
     }
 
     _loadImageHandler(event) {
-        this._actions.main.addImageObject(event.target.files[0])
+        this._actions.main.addImageObject(event.target.files[0]);
     }
 }
 
-CustomEvents.mixin(Ui)
+CustomEvents.mixin(Ui);
 
-export default Ui
+export default Ui;
