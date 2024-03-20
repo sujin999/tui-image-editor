@@ -40547,13 +40547,13 @@ var Range = /*#__PURE__*/function () {
     var _this2 = this;
     clearTimeout(this._userInputTimer);
     var keyCode = event.keyCode;
-    if (keyCode < keyCodes.DIGIT_0 || keyCode > keyCodes.DIGIT_9) {
+    if (keyCode > keyCodes.DIGIT_0 && keyCode < keyCodes.DIGIT_9 || keyCode === keyCodes.BACKSPACE || keyCode === keyCodes.DEL) {
+      this._userInputTimer = setTimeout(function () {
+        _this2._inputSetValue(event.target.value);
+      }, 350);
+    } else {
       event.preventDefault();
-      return;
     }
-    this._userInputTimer = setTimeout(function () {
-      _this2._inputSetValue(event.target.value);
-    }, 350);
   };
   _proto._inputSetValue = function _inputSetValue(stringValue) {
     var value = this._useDecimal ? Number(stringValue) : toInteger(stringValue);
