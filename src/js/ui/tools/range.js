@@ -261,7 +261,7 @@ class Range {
 
         const { keyCode } = event;
         if (
-            (keyCode > keyCodes.DIGIT_0 && keyCode < keyCodes.DIGIT_9) ||
+            (keyCode >= keyCodes.DIGIT_0 && keyCode <= keyCodes.DIGIT_9) ||
             keyCode === keyCodes.BACKSPACE ||
             keyCode === keyCodes.DEL
         ) {
@@ -274,9 +274,12 @@ class Range {
     }
 
     _inputSetValue(stringValue) {
-        let value = this._useDecimal
-            ? Number(stringValue)
-            : toInteger(stringValue);
+        let value;
+        if (stringValue && !isNaN(stringValue)) {
+            value = this._useDecimal ? Number(stringValue) : toInteger(stringValue);
+        } else {
+            value = 0;
+        }
         value = clamp(value, this._min, this.max);
 
         this.value = value;
