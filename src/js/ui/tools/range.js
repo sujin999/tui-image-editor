@@ -260,6 +260,7 @@ class Range {
         clearTimeout(this._userInputTimer);
 
         const { keyCode } = event;
+        // 입력 key
         if (
             (keyCode >= keyCodes.DIGIT_0 && keyCode <= keyCodes.DIGIT_9) ||
             keyCode === keyCodes.BACKSPACE ||

@@ -40547,7 +40547,8 @@ var Range = /*#__PURE__*/function () {
     var _this2 = this;
     clearTimeout(this._userInputTimer);
     var keyCode = event.keyCode;
-    if (keyCode > keyCodes.DIGIT_0 && keyCode < keyCodes.DIGIT_9 || keyCode === keyCodes.BACKSPACE || keyCode === keyCodes.DEL) {
+    // 입력 key
+    if (keyCode >= keyCodes.DIGIT_0 && keyCode <= keyCodes.DIGIT_9 || keyCode === keyCodes.BACKSPACE || keyCode === keyCodes.DEL) {
       this._userInputTimer = setTimeout(function () {
         _this2._inputSetValue(event.target.value);
       }, 350);
@@ -40556,7 +40557,12 @@ var Range = /*#__PURE__*/function () {
     }
   };
   _proto._inputSetValue = function _inputSetValue(stringValue) {
-    var value = this._useDecimal ? Number(stringValue) : toInteger(stringValue);
+    var value;
+    if (stringValue && !isNaN(stringValue)) {
+      value = this._useDecimal ? Number(stringValue) : toInteger(stringValue);
+    } else {
+      value = 0;
+    }
     value = clamp(value, this._min, this.max);
     this.value = value;
     this.fire('change', value, true);
